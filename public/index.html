@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GATE Quest - Practice Questions</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container { 
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            position: relative;
+            margin-bottom: 0.2em;
+        }
+
+        .header h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+            margin-top: 0.3em;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .user-info span {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            background: #f5f5f5;
+            transform: translateY(-2px);
+        }
+
+        .profile-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4f46e5;
+            font-size: 1.1em;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(102,126,234,0.08);
+        }
+
+        .logout-btn {
+            padding: 0.7rem 1.2rem;
+            background: #f3f4f6;
+            color: #4f46e5;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: 0 2px 8px rgba(102,126,234,0.06);
+        }
+
+        .logout-btn:hover {
+            background: #e0e7ff;
+            color: #333;
+        }
+
+        .quiz-container {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 18px;
+            box-shadow: 0 6px 32px rgba(0,0,0,0.13);
+        }
+
+        .filter {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter select {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #333;
+            background: #f9fafb;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .filter select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px #c7d2fe;
+        }
+
+        .question-container {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            background: #fafafa;
+            transition: all 0.3s ease;
+        }
+
+        .question-container:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .option {
+            padding: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            color: #444;
+        }
+
+        .option:hover {
+            background: #f5f5f5;
+            transform: translateY(-2px);
+        }
+
+        .option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .option.correct {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+
+        .option.incorrect {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .btn {
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 2px 12px rgba(102,126,234,0.13);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #5a67d8 0%, #6d28d9 100%);
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #ddd;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #138496;
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result.success {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .result.error {
+            background: #ffcccc;
+            color: #a94442;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        .question-number {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+                padding: 1rem;
+            }
+
+            .user-info {
+                flex-direction: column;
+            }
+
+            .filter {
+                flex-direction: column;
+            }
+
+            .filter select {
+                width: 100%;
+            }
+
+            .quiz-container {
+                padding: 1.5rem;
+            }
+
+            .question-container {
+                padding: 1.5rem;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="homeExtras">
+        <div id="welcomeStatement" style="
+            text-align:center;
+            font-size:1.25rem;
+            font-weight:700;
+            color:#222;
+            letter-spacing:0.5px;
+            margin-bottom:1.7rem;
+            margin-top:1.5rem;
+            background:linear-gradient(90deg,#e0e7ff 0%,#a5b4fc 100%);
+            border-radius:20px;
+            box-shadow:0 6px 24px rgba(102,126,234,0.10);
+            padding:1.5rem 1rem 1.3rem 1rem;
+            transition:box-shadow 0.2s;
+        ">
+            Welcome to the Ultimate GATE Preparation Hub!
+        </div>
+        <a href="about.html" id="aboutGateBtn" style="display:block;text-align:center;margin:2.5rem auto 1.5rem auto;padding:1rem 2.5rem;font-size:1.1rem;font-weight:700;background:linear-gradient(90deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;border-radius:8px;box-shadow:0 2px 12px rgba(102,126,234,0.13);cursor:pointer;transition:background 0.2s;text-decoration:none;">About GATE Exam</a>
+    </div>
+    <div class="container">
+        <div class="header">
+        <h1>GATE Quest</h1>
+            <div class="user-info">
+                <span id="userName"></span>
+                <div class="nav-links">
+                    <a href="profile.html">
+                        <div class="profile-icon" id="headerProfileIcon"></div>
+                        Profile
+                    </a>
+                    <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-container">
+        <div class="filter">
+                <div style="position:relative;display:inline-block;width:100%;max-width:350px;">
+                    <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:1.2em;pointer-events:none;">📚</span>
+                    <select id="branch" onchange="updateSubjects()" style="padding-left:2.5em;">
+                    <option value="">Select Branch</option>
+                    <option value="cse">Computer Science Engineering (CSE)</option>
+                    <option value="ece">Electronics & Communication (ECE)</option>
+                    <option value="mech">Mechanical Engineering (MECH)</option>
+                    <option value="civil">Civil Engineering (CIVIL)</option>
+                    <option value="ee">Electrical Engineering (EE)</option>
+                </select>
+                </div>
+                <div style="position:relative;display:inline-block;width:100%;max-width:350px;">
+                    <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:1.2em;pointer-events:none;">📖</span>
+                    <select id="subject" style="padding-left:2.5em;">
+                    <option value="">Select Subject</option>
+                </select>
+                </div>
+            </div>
+
+            <div id="questionContainer" class="question-container" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar"></div>
+        </div>
+                <div class="question-number" id="questionNumber"></div>
+                <div id="question" class="question"></div>
+                <div id="options" class="options"></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-primary" id="startQuizBtn" onclick="startQuiz()" style="display:flex;align-items:center;gap:0.5em;">
+                    Start Quiz
+                </button>
+                <button class="btn btn-secondary" onclick="prevQuestion()" id="prevBtn" style="display: none;">Previous Question</button>
+                <button class="btn btn-secondary" onclick="nextQuestion()" id="nextBtn" style="display: none;">Next Question</button>
+                <button class="btn btn-danger" onclick="quitQuiz()" id="quitBtn" style="display: none;">Quit Quiz</button>
+                <button class="btn btn-warning" onclick="submitQuiz()" id="submitBtn" style="display: none; background: #ffc107; color: #333;">Submit</button>
+            </div>
+
+            <div id="result" class="result"></div>
+        </div>
+    </div>
+
+    <footer style="width:100%;text-align:center;margin-top:1rem;margin-bottom:0.1rem;font-size:1rem;color:#e5e5e5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif;letter-spacing:0.2px;background:none;">
+© 2025 GATE Quest - The Ultimate Preparation. All rights reserved.
+</footer>
+
+    <script>
+        // Use relative paths for all API calls
+        const API_BASE_URL = ''; 
+
+        async function loadQuestionsFromAPI(branch, subject) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/questions?branch=${branch}&subject=${subject}`);
+                if (!response.ok) {
+                    throw new Error('Failed to load questions from database. Server may be down.');
+                }
+                const data = await response.json();
+                if (typeof data !== 'object' || data === null) {
+                    throw new Error('Received invalid data from server. Expected JSON.');
+                }
+                return data;
+            } catch (error) {
+                console.error('Error loading questions:', error);
+                alert('Error: ' + error.message); 
+                return [];
+            }
+        }
+
+        window.onload = async function() {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+                return;
+            }
+            const email = localStorage.getItem('userEmail');
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/users`);
+                const users = await res.json();
+                const currentUser = users.find(user => user.email === email);
+                if (currentUser) {
+                    document.getElementById('userName').textContent = `Welcome, ${currentUser.name}`;
+                    document.getElementById('headerProfileIcon').textContent = currentUser.name.charAt(0).toUpperCase();
+                }
+            } catch (error) {
+                console.error("Failed to fetch user data:", error);
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            window.location.href = 'login.html';
+        }
+
+        const subjectDisplayNames = {
+            cse: {
+                data_structures: 'Data Structures',
+                computer_networks: 'Computer Networks',
+                operating_systems: 'Operating Systems',
+                database_management: 'Database Management',
+                algorithms: 'Algorithms'
+            },
+            ece: {
+                digital_electronics: 'Digital Electronics',
+                analog_electronics: 'Analog Electronics',
+                communication_systems: 'Communication Systems',
+                electromagnetic_theory: 'Electromagnetic Theory',
+                control_systems: 'Control Systems'
+            },
+            mech: {
+                thermodynamics: 'Thermodynamics',
+                fluid_mechanics: 'Fluid Mechanics',
+                heat_transfer: 'Heat Transfer',
+                machine_design: 'Machine Design',
+                manufacturing_processes: 'Manufacturing Processes'
+            },
+            civil: {
+                structural_analysis: 'Structural Analysis',
+                geotechnical_engineering: 'Geotechnical Engineering',
+                transportation_engineering: 'Transportation Engineering',
+                environmental_engineering: 'Environmental Engineering',
+                fluid_mechanics: 'Fluid Mechanics'
+            },
+            ee: {
+                power_systems: 'Power Systems',
+                electrical_machines: 'Electrical Machines',
+                power_electronics: 'Power Electronics',
+                control_systems: 'Control Systems',
+                electrical_measurements: 'Electrical Measurements'
+            }
+        };
+
+        const subjects = {
+            cse: Object.keys(subjectDisplayNames.cse),
+            ece: Object.keys(subjectDisplayNames.ece),
+            mech: Object.keys(subjectDisplayNames.mech),
+            civil: Object.keys(subjectDisplayNames.civil),
+            ee: Object.keys(subjectDisplayNames.ee)
+        };
+
+        function updateSubjects() {
+            const branch = document.getElementById('branch').value;
+            const subjectSelect = document.getElementById('subject');
+            subjectSelect.innerHTML = '<option value="">Select Subject</option>';
+
+            if (branch && subjects[branch]) {
+                subjects[branch].forEach(subjectKey => {
+                    const option = document.createElement('option');
+                    option.value = subjectKey;
+                    option.textContent = subjectDisplayNames[branch][subjectKey] || subjectKey;
+                    subjectSelect.appendChild(option);
+                });
+            }
+            updateHomeExtrasVisibility();
+        }
+
+        function updateHomeExtrasVisibility() {
+            var homeExtras = document.getElementById('homeExtras');
+            var questionContainer = document.getElementById('questionContainer');
+            var resultDiv = document.getElementById('result');
+            
+            if (questionContainer.style.display === 'none' && resultDiv.style.display === 'none') {
+                homeExtras.style.display = 'block';
+            } else {
+                homeExtras.style.display = 'none';
+            }
+        }
+
+        let currentQuestion = 0;
+        let score = 0;
+        let questions = [];
+        let attempted = [];
+
+        async function startQuiz() {
+            const branch = document.getElementById('branch').value;
+            const subject = document.getElementById('subject').value;
+            if (!branch || !subject) {
+                alert('Please select both branch and subject');
+                return;
+            }
+            questions = await loadQuestionsFromAPI(branch, subject);
+            if (!questions || questions.length === 0) {
+                alert('No questions available for this subject. Please try another subject.');
+                return;
+            }
+            currentQuestion = 0;
+            score = 0;
+            attempted = Array(questions.length).fill(null); // Use null to track selections
+            showQuestion();
+            document.getElementById('nextBtn').style.display = 'block';
+            document.getElementById('quitBtn').style.display = 'block';
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('startQuizBtn').style.display = 'none';
+            updateHomeExtrasVisibility();
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('question').textContent = question.question;
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.onclick = () => selectOption(index, optionElement);
+                optionsContainer.appendChild(optionElement);
+            });
+
+            document.getElementById('questionContainer').style.display = 'block';
+            document.getElementById('prevBtn').style.display = currentQuestion > 0 ? 'block' : 'none';
+        }
+
+        function selectOption(selectedIndex, selectedOptionElement) {
+            if (attempted[currentQuestion] !== null) return; // Prevent re-answering
+
+            attempted[currentQuestion] = selectedIndex; // Record the answer
+            
+            const question = questions[currentQuestion];
+            const isCorrect = Array.isArray(question.correct)
+                ? question.correct.includes(selectedIndex)
+                : selectedIndex === question.correct;
+
+            if (isCorrect) {
+                score++;
+                selectedOptionElement.classList.add('correct');
+            } else {
+                selectedOptionElement.classList.add('incorrect');
+                // Highlight the correct answer(s)
+                const allOptions = document.querySelectorAll('.option');
+                if (Array.isArray(question.correct)) {
+                    question.correct.forEach(idx => allOptions[idx].classList.add('correct'));
+                } else {
+                    allOptions[question.correct].classList.add('correct');
+                }
+            }
+
+            // Disable all options after selection
+            document.querySelectorAll('.option').forEach(opt => opt.style.pointerEvents = 'none');
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+        
+        function submitQuiz() {
+            if (confirm('Are you sure you want to submit?')) {
+                showResult();
+            }
+        }
+
+        async function showResult() {
+            const resultDiv = document.getElementById('result');
+            const filterDiv = document.querySelector('.filter');
+            const branchSelect = document.getElementById('branch');
+            const subjectSelect = document.getElementById('subject');
+
+            let branchText = branchSelect.options[branchSelect.selectedIndex]?.text || 'N/A';
+            let subjectText = subjectSelect.options[subjectSelect.selectedIndex]?.text || 'N/A';
+            
+            const attemptedCount = attempted.filter(a => a !== null).length;
+            const percentage = questions.length > 0 ? (score / questions.length) * 100 : 0;
+
+            resultDiv.innerHTML = `<strong>Branch:</strong> ${branchText}<br><strong>Subject:</strong> ${subjectText}<br><br>Quiz Completed!<br>
+                <strong>Your Score:</strong> ${score} / ${questions.length} (${percentage.toFixed(1)}%)<br>
+                <strong>Attempted:</strong> ${attemptedCount} / ${questions.length}`;
+            
+            resultDiv.className = 'result show ' + (score >= questions.length / 2 ? 'success' : 'error');
+            
+            // Save quiz history
+            const email = localStorage.getItem('userEmail');
+            try {
+                const usersRes = await fetch(`${API_BASE_URL}/api/users`);
+                const users = await usersRes.json();
+                const user = users.find(u => u.email === email);
+                if (user) {
+                    const newEntry = { date: new Date(), branch: branchText, subject: subjectText, score, total: questions.length };
+                    const updatedHistory = Array.isArray(user.quizHistory) ? [...user.quizHistory, newEntry] : [newEntry];
+                    await fetch(`${API_BASE_URL}/api/users/${user._id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ quizHistory: updatedHistory })
+                    });
+                }
+            } catch (error) {
+                console.error("Failed to save quiz history:", error);
+            }
+            
+            document.getElementById('questionContainer').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('prevBtn').style.display = 'none';
+            document.getElementById('quitBtn').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+            filterDiv.style.display = 'none';
+
+            let newQuizBtn = document.getElementById('startNewQuizBtn');
+            if (!newQuizBtn) {
+                newQuizBtn = document.createElement('button');
+                newQuizBtn.id = 'startNewQuizBtn';
+                newQuizBtn.className = 'btn btn-primary';
+                newQuizBtn.textContent = 'Start New Quiz';
+                newQuizBtn.style.marginTop = '1rem';
+                newQuizBtn.onclick = resetQuiz;
+                resultDiv.parentNode.appendChild(newQuizBtn);
+            }
+            newQuizBtn.style.display = 'block';
+            updateHomeExtrasVisibility();
+        }
+        
+        function resetQuiz() {
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('startNewQuizBtn').style.display = 'none';
+            document.querySelector('.filter').style.display = 'flex';
+            document.getElementById('startQuizBtn').style.display = 'flex';
+            document.getElementById('branch').value = '';
+            updateSubjects();
+            updateHomeExtrasVisibility();
+        }
+
+        function quitQuiz() {
+            if (confirm('Are you sure you want to quit? Your progress will be lost.')) {
+                resetQuiz();
+            }
+        }
+    </script>
+</body>
+</html>
