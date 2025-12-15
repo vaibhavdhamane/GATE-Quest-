@@ -21,7 +21,7 @@ A modern web-based platform that helps students practice branch-wise and subject
 🗄️ Clear Data Flow Between Frontend & Backend
 
 🏗️ Tech Stack
-Frontend
+Frontend : 
 
 HTML, CSS, JavaScript
 
@@ -29,7 +29,7 @@ React.js (if used)
 
 Responsive UI/UX Design
 
-Backend
+Backend : 
 
 Node.js
 
