@@ -152,7 +152,7 @@
                 // CORRECTED: Use a relative path for the API call
                 const res = await fetch('/api/users');
                 if (!res.ok) {
-                    throw new Error('Could not connect to the server, Try Again.');
+                    throw new Error('Could not connect to the server, Try Again or Refresh For some time.');
                 }
                 const users = await res.json();
                 
